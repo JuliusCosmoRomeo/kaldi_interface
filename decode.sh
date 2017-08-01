@@ -1,4 +1,11 @@
 #/bin/bash
+if [ $1 = "--help" ]
+then
+  echo "Expected format: ./train modelname data-dir"
+  exit
+fi
+
+
 if [ $# -lt 2 ]
 then
   echo "Not enough parameters. Expected format: ./decode modelname test-dir"

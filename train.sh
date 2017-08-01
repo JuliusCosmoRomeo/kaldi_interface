@@ -1,6 +1,12 @@
 
 #/bin/bash
 
+if [ $1 = "--help" ]
+then 
+  echo "Expected format: ./train modelname data-dir"
+  exit
+fi
+
 #TODO: check if data dir correct
 if [ $# -lt 1 ]
 then
