@@ -3,45 +3,59 @@
 
 if [ $1 = "--help" ]
 then 
-  echo "Expected format: ./train modelname data-dir"
+  echo "Expected format: ./train modelname //expects data to be located under /data/models/modelname/wav"
+  echo "                 ./train modelname data-dir [utterance-postfix]"
+  echo "Available postfixes are:"
+echo "_Kinect-Beam
+_Samson
+_Kinect-RAW
+_Realtek
+_Yamaha"
   exit
 fi
 
 #TODO: check if data dir correct
 if [ $# -lt 1 ]
 then
-  echo "Not enough parameters. Expected format: ./train modelname data-dir"
+  echo "Not enough parameters. Expected format: ./train modelname data-dir [utterance-postfix]"
+  echo "Available postfixes are:
+_Kinect-Beam
+_Samson
+_Kinect-RAW
+_Realtek
+_Yamaha"
+
   exit
 else
-  if [ -d ~/kaldi/egs/$1 ]
+  if [ -d /data/models/$1/s5 ]
   then
     echo "Model already exists: exiting"
     exit
   else
     echo "Training new model with name $1"
     #clone default model
-    #does git have the right authorisation here?
-    cd kaldi/egs/
+    cd /data/models/
     git clone https://github.com/JuliusCosmoRomeo/kaldi-tuda-de.git $1
     #copy data to dir
     if [ $# -ge 2 ]
     then 
-      echo "Copying data from $2 to the data dir of the model"
-      cd $2
-      cp -r train ~/kaldi/egs/$1/s5/data/wav/
-      echo "Copied train"
-      cp -r test ~/kaldi/egs/$1/s5/data/wav/
-      echo "Copied test"
-      cp -r dev ~/kaldi/egs/$1/s5/data/wav/
-      echo "Copied dev"
-      cd ~/kaldi/egs/
+      echo "Linking data from $2 to the data dir of the model"
+      
+      ln -s $2/train /data/models/$1/s5/data/wav/
+      echo "Linked train"
+      ln -s $2/test /data/models/$1/s5/data/wav/
+      echo "Linked test"
+      ln -s $2/dev /data/models/$1/s5/data/wav/
+      echo "Linked dev"
+      cd /data/models/
     else
-      cp -r /data/wav/train ~/kaldi/egs/$1/s5/data/wav/
-      echo "Copied train"
-      cp -r /data/wav/test ~/kaldi/egs/$1/s5/data/wav/
-      echo "Copied test"
-      cp -r /data/wav/dev ~/kaldi/egs/$1/s5/data/wav/
-      echo "Copied dev"
+      echo "Linking data from /data/models/$1/wav/ to the data dir of the model"
+      ln -s /data/models/$1/wav/train /data/models/$1/s5/data/wav/
+      echo "Linked train"
+      ln -s /data/models/$1/wav/test /data/models/$1/s5/data/wav/
+      echo "Linked test"
+      ln -s /data/models/$1/wav/dev /data/models/$1/s5/data/wav/
+      echo "Linked dev"
     fi
     cd $1/s5
     if [ $# = 3 ]

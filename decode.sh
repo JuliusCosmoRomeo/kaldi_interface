@@ -13,21 +13,29 @@ then
   ls kaldi/egs/
   exit
 else 
-  if [ -d ~/kaldi/egs/$1 ]
+  if [ -d /data/models/$1 ]
   then 
     echo "~/kaldi/egs/$1/s5"
-    if [ -f ~/kaldi/egs/$1/s5/decode.sh ]
+    if [ -f /data/models/$1/s5/decode.sh ]
     then 
        text_file_exists=0
        if [ -f text ]
        then
          text_file_exists=1
        fi
+       rm $2/wav.scp
+       dir_name=$2
+       if [ ${dir_name: -1} = "/" ]
+       then
+         dir_name=${dir_name::-1}
+       fi
+       dir_name=${dir_name##*/}
+       echo $dir_name
        for file in $( find $2 -name "*.wav" ); do
          filename=${file%.wav}
          if ! grep -Fq "${filename##*/}" $2/wav.scp
          then 
-           echo "${filename##*/} data/$1/${file##*/}" >> $2/wav.scp
+           echo "${filename##*/} data/$dir_name/${file##*/}" >> $2/wav.scp
            echo "Wrote to wav.scp"
          fi
          if ! grep -Fq "${filename##*/}" $2/utt2spk
@@ -41,8 +49,8 @@ else
            echo "Wrote to text"
          fi
        done
-       cd ~/kaldi/egs/$1/s5/
-       #./decode.sh $2
+       cd /data/models/$1/s5/
+       ./decode.sh $2
     fi
   fi
 fi
