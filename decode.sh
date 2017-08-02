@@ -50,7 +50,9 @@ else
          fi
        done
        cd /data/models/$1/s5/
-       ./decode.sh $2
+       time ./decode.sh $2
     fi
+  else 
+    echo "Model $1 does not exist in the /data/models-directory"
   fi
 fi
