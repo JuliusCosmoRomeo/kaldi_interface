@@ -49,7 +49,7 @@ else
            echo "Wrote to text"
          fi
        done
-       nohup /opt/mary/marytts-5.1.1/bin/marytts-server &
+       nohup /opt/mary/marytts-5.1.1/marytts-5.1.1/bin/marytts-server &
        cd /data/models/$1/s5/
        time ./decode.sh $2
     fi
