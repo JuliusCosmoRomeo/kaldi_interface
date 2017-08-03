@@ -1,14 +1,14 @@
 #!/bin/bash
 if [ $1 = "--help" ]
 then
-  echo "Expected format: ./decode.sh modelname test-dir"
+  echo "Expected format: /kaldi_interface/decode.sh modelname test-dir"
   exit
 fi
 
 
 if [ $# -lt 2 ]
 then
-  echo "Not enough parameters. Expected format: ./decode modelname test-dir"
+  echo "Not enough parameters. Expected format: /kaldi_interface/decode modelname test-dir"
   echo "Available modelnames: "
   ls kaldi/egs/
   exit

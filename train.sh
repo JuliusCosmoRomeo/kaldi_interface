@@ -2,8 +2,8 @@
 
 if [ $1 = "--help" ]
 then 
-  echo "Expected format: ./train.sh modelname //expects data to be located under /data/models/modelname/wav"
-  echo "                 ./train.sh modelname data-dir [utterance-postfix]"
+  echo "Expected format: /kaldi_interface/train.sh modelname //expects data to be located under /data/models/modelname/wav"
+  echo "                 /kaldi_interface/train.sh modelname data-dir [utterance-postfix]"
   echo "Available postfixes are:"
 echo "_Kinect-Beam
 _Samson
@@ -16,7 +16,7 @@ fi
 #TODO: check if data dir correct
 if [ $# -lt 1 ]
 then
-  echo "Not enough parameters. Expected format: ./train.sh modelname data-dir [utterance-postfix]"
+  echo "Not enough parameters. Expected format: /kaldi_interface/train.sh modelname data-dir [utterance-postfix]"
   echo "Available postfixes are:
 _Kinect-Beam
 _Samson
