@@ -65,6 +65,7 @@ else
       echo "Linked dev"
     fi
     cd $1/s5
+    nohup /opt/mary/marytts-5.1.1/bin/marytts-server &
     if [ $# = 3 ]
     then
       ./run.sh $3
