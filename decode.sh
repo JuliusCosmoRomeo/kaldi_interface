@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 if [ $1 = "--help" ]
 then
   echo "Expected format: ./decode.sh modelname test-dir"

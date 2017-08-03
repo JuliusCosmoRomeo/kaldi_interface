@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 echo "Your available commands are:" 
 echo "./train.sh modelname //expects data to be located under /data/models/modelname/wav"
