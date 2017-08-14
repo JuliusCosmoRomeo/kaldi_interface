@@ -13,9 +13,14 @@ then
   ls kaldi/egs/
   exit
 else 
+  if [ ! -d /data/models ]
+  then 
+    echo "The directory /data/models does not exist. Please put your pre-built models into the /data/models-directory or train a new model."
+    exit
+  fi
   if [ -d /data/models/$1 ]
   then 
-    echo "~/kaldi/egs/$1/s5"
+    echo "Model $1 found."
     if [ -f /data/models/$1/s5/decode.sh ]
     then 
        text_file_exists=0
@@ -55,5 +60,6 @@ else
     fi
   else 
     echo "Model $1 does not exist in the /data/models-directory"
+    exit
   fi
 fi

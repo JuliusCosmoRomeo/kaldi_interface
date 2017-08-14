@@ -31,9 +31,19 @@ else
     echo "Model already exists: exiting"
     exit
   else
+    if [ ! -d /data ]
+    then 
+      echo "No /data-directory found. Please mount your host-directory containing train-/test-data and models into /data in the docker container."
+      exit
+    fi
     echo "Training new model with name $1"
-    #clone default model
+    if [ ! -d /data/models ]
+    then 
+      echo "Creating /data/models"
+      mkdir /data/models
+    fi
     cd /data/models/
+    #clone default model
     git clone https://github.com/JuliusCosmoRomeo/kaldi-tuda-de.git $1
     #copy data to dir
     if [ $# -ge 2 ]
@@ -48,23 +58,45 @@ else
         echo "Linking data from $2 to the data dir of the model"
       
         ln -s $2/train /data/models/$1/s5/data/wav/
-        echo "Linked train"
+        
         ln -s $2/test /data/models/$1/s5/data/wav/
-        echo "Linked test"
+        
         ln -s $2/dev /data/models/$1/s5/data/wav/
-        echo "Linked dev"
+         
         cd /data/models/
      fi
     else
       echo "Linking data from /data/models/$1/wav/ to the data dir of the model"
       ln -s /data/models/$1/wav/train /data/models/$1/s5/data/wav/
-      echo "Linked train"
+      
       ln -s /data/models/$1/wav/test /data/models/$1/s5/data/wav/
-      echo "Linked test"
+      
       ln -s /data/models/$1/wav/dev /data/models/$1/s5/data/wav/
-      echo "Linked dev"
+       
     fi
+    if [ -L /data/models/$1/s5/data/wav/ ]
+    then 
+      echo "Linked train"
+    else 
+      echo "Data could not be linked to /data/models/$1/s5/data/wav/. Not processing further."
+      exit
+    fi
+    if [ -L /data/models/$1/s5/data/wav/ ]
+    then 
+      echo "Linked test"
+    else 
+      echo "Data could not be linked to /data/models/$1/s5/data/wav/. Not processing further."
+      exit
+    fi
+    if [ -L /data/models/$1/s5/data/wav/ ]
+    then 
+        echo "Linked dev"
+    else 
+        echo "Data could not be linked to /data/models/$1/s5/data/wav/. Not processing further."
+        exit
+    fi 
     cd $1/s5
+    echo "Starting maryTTS in the background"
     nohup /opt/mary/marytts-5.1.1/marytts-5.1.1/bin/marytts-server &
     if [ $# = 3 ]
     then
