@@ -74,21 +74,21 @@ else
       ln -s /data/models/$1/wav/dev /data/models/$1/s5/data/wav/
        
     fi
-    if [ -L /data/models/$1/s5/data/wav/ ]
+    if [ -L /data/models/$1/s5/data/wav/train ]
     then 
       echo "Linked train"
     else 
       echo "Data could not be linked to /data/models/$1/s5/data/wav/. Not processing further."
       exit
     fi
-    if [ -L /data/models/$1/s5/data/wav/ ]
+    if [ -L /data/models/$1/s5/data/wav/test ]
     then 
       echo "Linked test"
     else 
       echo "Data could not be linked to /data/models/$1/s5/data/wav/. Not processing further."
       exit
     fi
-    if [ -L /data/models/$1/s5/data/wav/ ]
+    if [ -L /data/models/$1/s5/data/wav/dev ]
     then 
         echo "Linked dev"
     else 
