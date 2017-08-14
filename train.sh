@@ -26,9 +26,9 @@ _Yamaha"
 
   exit
 else
-  if [ -d /data/models/$1/s5 ]
+  if [ -d /data/models/$1 ]
   then
-    echo "Model already exists: exiting"
+    echo "Model already exists. To train a model with the name '$1' you need to remove the model in the directory /data/models/$1 first: exiting"
     exit
   else
     if [ ! -d /data ]
