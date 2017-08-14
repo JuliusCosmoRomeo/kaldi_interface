@@ -98,6 +98,7 @@ else
     cd $1/s5
     echo "Starting maryTTS in the background"
     nohup /opt/mary/marytts-5.1.1/marytts-5.1.1/bin/marytts-server &
+    sleep 15 s
     if [ $# = 3 ]
     then
       ./run.sh $3

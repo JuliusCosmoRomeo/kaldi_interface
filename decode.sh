@@ -55,6 +55,7 @@ else
          fi
        done
        nohup /opt/mary/marytts-5.1.1/marytts-5.1.1/bin/marytts-server &
+       sleep 15 s
        cd /data/models/$1/s5/
        time ./decode.sh $2
     fi
