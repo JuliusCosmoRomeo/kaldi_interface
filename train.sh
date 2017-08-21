@@ -53,6 +53,12 @@ else
         cd $2
         echo "Downloading data"
         ./download.sh
+        ln -s $2/train /data/models/$1/s5/data/wav/
+
+        ln -s $2/test /data/models/$1/s5/data/wav/
+
+        ln -s $2/dev /data/models/$1/s5/data/wav/
+        cd /data/models
       else
 
         echo "Linking data from $2 to the data dir of the model"
@@ -97,7 +103,7 @@ else
     fi 
     cd $1/s5
     echo "Starting maryTTS in the background"
-    nohup /opt/mary/marytts-5.1.1/marytts-5.1.1/bin/marytts-server &
+    #nohup /opt/mary/marytts-5.1.1/marytts-5.1.1/bin/marytts-server &
     sleep 15s
     if [ $# = 3 ]
     then
