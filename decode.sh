@@ -13,18 +13,18 @@ then
   ls kaldi/egs/
   exit
 else 
-  if [ ! -d /data/models ]
+  if [ ! -d /models ]
   then 
-    echo "The directory /data/models does not exist. Please put your pre-built models into the /data/models-directory or train a new model."
+    echo "The directory /models does not exist. Please put your pre-built models into the /models-directory or train a new model with the train.sh-command."
     exit
   fi
-  if [ -d /data/models/$1 ]
+  if [ -d /models/$1 ]
   then 
     echo "Model $1 found."
-    if [ -f /data/models/$1/s5/decode.sh ]
+    if [ -f /models/$1/s5/decode.sh ]
     then 
        text_file_exists=0
-       if [ -f text ]
+       if [ -f $2/text ]
        then
          text_file_exists=1
        fi
@@ -48,19 +48,22 @@ else
            echo "${filename##*/} ${filename##*/}" >> $2/utt2spk
            echo "Wrote to utt2spk"
          fi
-         if ! grep -Fq "${filename##*/}" $2/text 
-         then 
-           echo "${filename##*/} None" >> $2/text
-           echo "Wrote to text"
-         fi
+	 if text_file_exists == 0
+	 then
+           if ! grep -Fq "${filename##*/}" $2/text 
+           then 
+             echo "${filename##*/} None" >> $2/text
+             echo "Wrote to text"
+           fi
+	 fi
        done
        nohup /opt/mary/marytts-5.1.1/marytts-5.1.1/bin/marytts-server &
        sleep 15s
-       cd /data/models/$1/s5/
+       cd /models/$1/s5/
        time ./decode.sh $2
     fi
   else 
-    echo "Model $1 does not exist in the /data/models-directory"
+    echo "Model $1 does not exist in the /models-directory"
     exit
   fi
 fi

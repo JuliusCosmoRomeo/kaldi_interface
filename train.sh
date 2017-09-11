@@ -26,79 +26,62 @@ _Yamaha"
 
   exit
 else
-  if [ -d /data/models/$1 ]
+  if [ -d /models/$1 ]
   then
-    echo "Model already exists. To train a model with the name '$1' you need to remove the model in the directory /data/models/$1 first: exiting"
+    echo "Model already exists. To train a model with the name '$1' you need to remove the model in the directory /models/$1 first: exiting"
     exit
   else
     if [ ! -d /data ]
     then 
-      echo "No /data-directory found. Please mount your host-directory containing train-/test-data and models into /data in the docker container."
+      echo "No /data-directory found. Please mount your host-directory containing train-/test-data into /data in the docker container."
       exit
     fi
     echo "Training new model with name $1"
-    if [ ! -d /data/models ]
+    if [ ! -d /models ]
     then 
-      echo "Creating /data/models"
-      mkdir /data/models
+      echo "Creating /models"
+      mkdir /models
     fi
-    cd /data/models/
+    cd /models/
+    echo "Creating model '$1' from default model."
     #clone default model
+    #git clone https://github.com/JuliusCosmoRomeo/kaldi-tuda-de.git --branch other_lex --single-branch $1
     git clone https://github.com/JuliusCosmoRomeo/kaldi-tuda-de.git $1
     #copy data to dir
     if [ $# -ge 2 ]
-    then 
+    then
       if [ -f $2/download.sh ]
       then
         cd $2
         echo "Downloading data"
         ./download.sh
-        ln -s $2/train /data/models/$1/s5/data/wav/
-
-        ln -s $2/test /data/models/$1/s5/data/wav/
-
-        ln -s $2/dev /data/models/$1/s5/data/wav/
-        cd /data/models
       else
-
         echo "Linking data from $2 to the data dir of the model"
-      
-        ln -s $2/train /data/models/$1/s5/data/wav/
-        
-        ln -s $2/test /data/models/$1/s5/data/wav/
-        
-        ln -s $2/dev /data/models/$1/s5/data/wav/
-         
-        cd /data/models/
-     fi
-    else
-      echo "Linking data from /data/models/$1/wav/ to the data dir of the model"
-      ln -s /data/models/$1/wav/train /data/models/$1/s5/data/wav/
-      
-      ln -s /data/models/$1/wav/test /data/models/$1/s5/data/wav/
-      
-      ln -s /data/models/$1/wav/dev /data/models/$1/s5/data/wav/
-       
+      fi
+      ln -s $2/train /models/$1/s5/data/wav/
+      ln -s $2/test /models/$1/s5/data/wav/
+      ln -s $2/dev /models/$1/s5/data/wav/
+      cd /models/
     fi
-    if [ -L /data/models/$1/s5/data/wav/train ]
+    if [ -L /models/$1/s5/data/wav/train ]
     then 
       echo "Linked train"
     else 
-      echo "Data could not be linked to /data/models/$1/s5/data/wav/. Not processing further."
+      echo "Data could not be linked to /models/$1/s5/data/wav/. Not processing further."
       exit
     fi
-    if [ -L /data/models/$1/s5/data/wav/test ]
+    if [ -L /models/$1/s5/data/wav/test ]
     then 
       echo "Linked test"
     else 
-      echo "Data could not be linked to /data/models/$1/s5/data/wav/. Not processing further."
+      echo "Data could not be linked to /models/$1/s5/data/wav/. Not processing further."
       exit
     fi
-    if [ -L /data/models/$1/s5/data/wav/dev ]
+    if [ -L /models/$1/s5/data/wav/dev ]
     then 
         echo "Linked dev"
     else 
-        echo "Data could not be linked to /data/models/$1/s5/data/wav/. Not processing further."
+        echo "Data could not be linked to /models/$1/s5/data/wav/. Not processing further."
         exit
     fi 
     cd $1/s5
