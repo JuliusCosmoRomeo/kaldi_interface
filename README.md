@@ -33,8 +33,8 @@ or
 
 **docker run -v volume_dir:/data /kaldi_interface/train.sh model_name path_to_data_dir [utterance-postfix]**
 
-# IMPORTANT: path_to_data_dir is the root-folder, in which the 3 directories "train", "test" and "dev" are located
-# e.g. if your "train"-, "test"-, and "dev"-dirs are located in /data/, the expect path_to_dir_name would be /data
+### IMPORTANT: path_to_data_dir is the root-folder, in which the 3 directories "train", "test" and "dev" are located
+### e.g. if your "train"-, "test"-, and "dev"-dirs are located in /data/, the expected path_to_dir_name would be /data
 
 Read the chapter "Train a model - How the dir-structure of the mounted directory should look like" for data preparation
 
