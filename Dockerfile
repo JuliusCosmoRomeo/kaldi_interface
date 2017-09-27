@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y  \
 	maven \
 	openjdk-7-jdk \
     python2.7 \
+	python3 \
     python-pip \
     python-yaml \
     python-simplejson \
