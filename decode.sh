@@ -28,31 +28,40 @@ else
        then
          text_file_exists=1
        fi
-       rm $2/wav.scp
-       dir_name=$2
-       if [ ${dir_name: -1} = "/" ]
-       then
-         dir_name=${dir_name::-1}
+       cd /models/$1/s5/data
+       if [ ! -d decoding ]
+	 then
+	 mkdir decoding
        fi
-       dir_name=${dir_name##*/}
-       echo $dir_name
-       for file in $( find $2 -name "*.wav" ); do
+       cd decoding
+       ln -s $2/* ./
+       
+	#rm $2/wav.scp
+       #dir_name=$2
+       #if [ ${dir_name: -1} = "/" ]
+       #then
+       #  dir_name=${dir_name::-1}
+       #fi
+       #dir_name=${dir_name##*/}
+       #echo $dir_name
+       for file in $( find ./ -name "*.wav" ); do
          filename=${file%.wav}
-         if ! grep -Fq "${filename##*/}" $2/wav.scp
+	 echo "Found file $file"
+         if ! grep -Fq "${filename##*/}" ./wav.scp
          then 
-           echo "${filename##*/} data/$dir_name/${file##*/}" >> $2/wav.scp
+           echo "${filename##*/} data/decoding/${file##*/}" >> ./wav.scp
            echo "Wrote to wav.scp"
          fi
-         if ! grep -Fq "${filename##*/}" $2/utt2spk
+         if ! grep -Fq "${filename##*/}" ./utt2spk
          then
-           echo "${filename##*/} ${filename##*/}" >> $2/utt2spk
+           echo "${filename##*/} ${filename##*/}" >> ./utt2spk
            echo "Wrote to utt2spk"
          fi
-	 if text_file_exists == 0
+	 if [ text_file_exists = 0 ]
 	 then
-           if ! grep -Fq "${filename##*/}" $2/text 
+           if ! grep -Fq "${filename##*/}" ./text 
            then 
-             echo "${filename##*/} None" >> $2/text
+             echo "${filename##*/} None" >> ./text
              echo "Wrote to text"
            fi
 	 fi
@@ -60,7 +69,8 @@ else
        nohup /opt/mary/marytts-5.1.1/marytts-5.1.1/bin/marytts-server &
        sleep 15s
        cd /models/$1/s5/
-       time ./decode.sh $2
+       wget -O decode.sh https://raw.githubusercontent.com/JuliusCosmoRomeo/kaldi-tuda-de/master/s5/decode.sh
+       time ./decode.sh data/decoding/
     fi
   else 
     echo "Model $1 does not exist in the /models-directory"
