@@ -28,10 +28,7 @@ else
        then
          text_file_exists=1
        fi
-       cd /models/$1/s5/data
-       ln -s $2/* ./
        
-       rm ./wav.scp
        dir_name=$2
        if [ ${dir_name: -1} = "/" ]
        then
@@ -40,17 +37,21 @@ else
        dir_name=${dir_name##*/}
        echo $dir_name
 
-       if [ ! -d $dir_name ]
+       if [ ! -d /decoding_$dir_name ]
          then
-         mkdir $dir_name
+         mkdir /decoding_$dir_name
+         echo "made dir /decoding_$dir_name"
        fi
-       cd $dir_name
+       cd /decoding_$dir_name
+       ln -s $2/* ./
+       rm ./wav.scp
+
        for file in $( find ./ -name "*.wav" ); do
          filename=${file%.wav}
 	 echo "Found file $file"
          if ! grep -Fq "${filename##*/}" ./wav.scp
          then 
-           echo "${filename##*/} data/decoding/${file##*/}" >> ./wav.scp
+           echo "${filename##*/} /decoding_$dir_name/${file##*/}" >> ./wav.scp
            echo "Wrote to wav.scp"
          fi
          if ! grep -Fq "${filename##*/}" ./utt2spk
@@ -71,8 +72,8 @@ else
        sleep 15s
        cd /models/$1/s5/
        wget -O decode.sh https://raw.githubusercontent.com/JuliusCosmoRomeo/kaldi-tuda-de/master/s5/decode.sh
-       time ./decode.sh data/$dir_name
-       rm -r /models/$1/s5/data/$dir_name
+       time ./decode.sh /decoding_$dir_name/
+       #rm -r /decoding_$dir_name
     fi
   else 
     echo "Model $1 does not exist in the /models-directory"
