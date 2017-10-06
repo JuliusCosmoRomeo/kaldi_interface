@@ -27,6 +27,7 @@ else
        if [ -f $2/text ]
        then
          text_file_exists=1
+	 echo "text file exists"
        fi
        
        dir_name=$2
@@ -36,15 +37,14 @@ else
        fi
        dir_name=${dir_name##*/}
        echo $dir_name
-
-       if [ ! -d /decoding_$dir_name ]
-         then
-         mkdir /decoding_$dir_name
-         echo "made dir /decoding_$dir_name"
-       fi
+       rm -r /decoding_$dir_name
+       mkdir /decoding_$dir_name
+       echo "made dir /decoding_$dir_name"
        cd /decoding_$dir_name
        ln -s $2/* ./
        rm ./wav.scp
+       ln -s /models/$1/s5/exp ./
+       ln -s /models/$1/s5/mfcc ./
 
        for file in $( find ./ -name "*.wav" ); do
          filename=${file%.wav}
