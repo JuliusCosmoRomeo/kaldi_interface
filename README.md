@@ -23,6 +23,7 @@ At the end of the Docker-build the docker-image internally looks as follows (the
 
 /data – this directory needs to be mounted into the docker-container. The complete structure of how the data-directory on the Host-system should look like can be found in the chapter Train a model
 
+
 ## Running the training-script
 The following command trains a GMM-HMM-model on your own data or on prepared data
 
@@ -30,7 +31,10 @@ The following command trains a GMM-HMM-model on your own data or on prepared dat
 
 or
 
-**docker run -v volume_dir:/data /kaldi_interface/train.sh model_name [path_to_data_dir] [utterance-postfix]**
+**docker run -v volume_dir:/data /kaldi_interface/train.sh model_name path_to_data_dir [utterance-postfix]**
+
+### IMPORTANT: path_to_data_dir is the root-folder, in which the 3 directories "train", "test" and "dev" are located
+### e.g. if your "train"-, "test"-, and "dev"-dirs are located in /data/, the expected path_to_dir_name would be /data
 
 Read the chapter "Train a model - How the dir-structure of the mounted directory should look like" for data preparation
 

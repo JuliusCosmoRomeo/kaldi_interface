@@ -84,7 +84,7 @@ else
         echo "Data could not be linked to /models/$1/s5/data/wav/. Not processing further."
         exit
     fi 
-    cd $1/s5
+    cd /models/$1/s5
     echo "Starting maryTTS in the background"
     nohup /opt/mary/marytts-5.1.1/marytts-5.1.1/bin/marytts-server &
     sleep 15s
