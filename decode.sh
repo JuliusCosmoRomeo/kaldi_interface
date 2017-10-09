@@ -59,7 +59,7 @@ else
            echo "${filename##*/} ${filename##*/}" >> ./utt2spk
            echo "Wrote to utt2spk"
          fi
-	 if [ text_file_exists = 0 ]
+	 if [ "$text_file_exists" -eq "0" ]
 	 then
            if ! grep -Fq "${filename##*/}" ./text 
            then 
