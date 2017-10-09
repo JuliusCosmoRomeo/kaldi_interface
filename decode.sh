@@ -73,11 +73,10 @@ else
        cd /models/$1/s5/
        wget -O decode.sh https://raw.githubusercontent.com/JuliusCosmoRomeo/kaldi-tuda-de/master/s5/decode.sh
        time ./decode.sh /decoding_$dir_name/
-       if [ text_file_exists :eq 0 ]
+       if [ "$text_file_exists" -eq "0" ]
        then
          ./get_best_wer.sh /decoding_$dir_name/
        fi
-       #rm -r /decoding_$dir_name
     fi
   else 
     echo "Model $1 does not exist in the /models-directory"
